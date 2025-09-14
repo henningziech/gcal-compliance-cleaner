@@ -191,14 +191,6 @@ Beiträge sind willkommen! Bitte:
 3. Committen Sie Ihre Änderungen
 4. Erstellen Sie einen Pull Request
 
-## 📞 Support
-
-Bei Fragen oder Problemen:
-
-1. Prüfen Sie die [Issues](../../issues)
-2. Erstellen Sie ein neues Issue
-3. Beschreiben Sie das Problem detailliert
-
 ## 🔄 Changelog
 
 ### Version 1.0
