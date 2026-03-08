@@ -1,205 +1,205 @@
 # Google Calendar GDPR Cleanup Script
 
-Ein Google Apps Script zur automatischen Bereinigung alter Kalendereinträge für GDPR-Compliance und Datenhygiene.
+A Google Apps Script for automatic cleanup of old calendar events for GDPR compliance and data hygiene.
 
-## 📋 Übersicht
+## Overview
 
-Dieses Script löscht automatisch Kalendereinträge, die älter als eine konfigurierbare Anzahl von Monaten sind. Es ist besonders nützlich für:
+This script automatically deletes calendar events older than a configurable number of months. It is especially useful for:
 
-- **GDPR-Compliance**: Automatische Löschung alter personenbezogener Daten
-- **Datenhygiene**: Bereinigung von veralteten Kalendereinträgen
-- **Speicherplatz-Optimierung**: Reduzierung der Kalenderdatenmenge
-- **Organisatorische Bereinigung**: Entfernung von alten Terminen und Events
+- **GDPR Compliance**: Automatic deletion of old personal data
+- **Data Hygiene**: Cleanup of outdated calendar entries
+- **Storage Optimization**: Reducing the amount of calendar data
+- **Organizational Cleanup**: Removal of old appointments and events
 
-## ⚠️ Wichtige Voraussetzungen
+## Important Prerequisites
 
-**Dieses Script benötigt spezielle Berechtigungen:**
+**This script requires special permissions:**
 
-1. **Google Workspace Admin-Account** mit Kalender-Admin-Rechten ODER
-2. **Account mit Edit-Rechten** für alle zu bereinigenden Kalender
+1. **Google Workspace Admin account** with calendar admin rights, OR
+2. **Account with edit rights** for all calendars to be cleaned
 
-**Ohne diese Berechtigungen kann das Script nicht auf die Kalender zugreifen!**
+**Without these permissions, the script cannot access the calendars!**
 
-## 🚀 Installation und Setup
+## Installation and Setup
 
-### 1. Google Apps Script erstellen
+### 1. Create the Google Apps Script project
 
-1. Gehen Sie zu [script.google.com](https://script.google.com)
-2. Klicken Sie auf "Neues Projekt"
-3. Kopieren Sie den Inhalt von `main.gs` in den Editor
-4. Speichern Sie das Projekt (Strg+S)
+1. Go to [script.google.com](https://script.google.com)
+2. Click "New project"
+3. Copy the contents of `main.gs` into the editor
+4. Save the project (Ctrl+S)
 
-### 2. Kalender-IDs konfigurieren
+### 2. Configure calendar IDs
 
-1. Öffnen Sie Google Calendar
-2. Gehen Sie zu den Kalender-Einstellungen
-3. Klicken Sie auf den gewünschten Kalender
-4. Scrollen Sie zu "Kalender-ID" und kopieren Sie diese
-5. Ersetzen Sie die Platzhalter in `main.gs`:
+1. Open Google Calendar
+2. Go to the calendar settings
+3. Click on the desired calendar
+4. Scroll to "Calendar ID" and copy it
+5. Replace the placeholders in `main.gs`:
 
 ```javascript
 var calendarIds = [
-  "ihre-kalender-id-1@resource.calendar.google.com",
-  "ihre-kalender-id-2@group.calendar.google.com",
-  "ihre-kalender-id-3@resource.calendar.google.com"
+  "your-calendar-id-1@resource.calendar.google.com",
+  "your-calendar-id-2@group.calendar.google.com",
+  "your-calendar-id-3@resource.calendar.google.com"
 ];
 ```
 
-### 3. Berechtigungen erteilen
+### 3. Grant permissions
 
-1. Führen Sie das Script zum ersten Mal aus
-2. Google wird nach Berechtigungen fragen
-3. Klicken Sie auf "Berechtigungen überprüfen"
-4. Wählen Sie Ihr Google-Konto aus
-5. Klicken Sie auf "Erweitert" → "Zu [Projektname] wechseln (nicht sicher)"
-6. Klicken Sie auf "Zulassen"
+1. Run the script for the first time
+2. Google will ask for permissions
+3. Click "Review permissions"
+4. Select your Google account
+5. Click "Advanced" > "Go to [project name] (unsafe)"
+6. Click "Allow"
 
-## 🔧 Konfiguration
+## Configuration
 
-### Sicherheitseinstellungen
+### Safety settings
 
 ```javascript
-var deleteEvents = false; // Setzen Sie auf true für echte Löschung
-var monthsBack = 6;       // Anzahl der Monate zurück
+var deleteEvents = false; // Set to true for actual deletion
+var monthsBack = 6;       // Number of months to look back
 ```
 
-**WICHTIG**: 
-- `deleteEvents = false`: Testmodus (zeigt nur an, was gelöscht würde)
-- `deleteEvents = true`: Echte Löschung (VORSICHT!)
+**IMPORTANT**:
+- `deleteEvents = false`: Test mode (only shows what would be deleted)
+- `deleteEvents = true`: Actual deletion (USE WITH CAUTION!)
 
-### Empfohlener Workflow
+### Recommended workflow
 
-1. **Testlauf**: `deleteEvents = false` → Script ausführen → Logs prüfen
-2. **Echte Ausführung**: `deleteEvents = true` → Script ausführen
+1. **Test run**: `deleteEvents = false` > Run script > Check logs
+2. **Actual execution**: `deleteEvents = true` > Run script
 
-## 📖 Verwendung
+## Usage
 
-### Hauptfunktion: `cleanOldEvents()`
+### Main function: `cleanOldEvents()`
 
-Führt die Bereinigung aller konfigurierten Kalender durch.
+Performs the cleanup of all configured calendars.
 
 ```javascript
 function cleanOldEvents() {
-  // Bereinigt alle Kalender
+  // Cleans all calendars
 }
 ```
 
-### Testfunktion: `testCalendarAccess()`
+### Test function: `testCalendarAccess()`
 
-Testet den Zugriff auf alle konfigurierten Kalender.
+Tests access to all configured calendars.
 
 ```javascript
 function testCalendarAccess() {
-  // Prüft Kalender-Zugriff
+  // Checks calendar access
 }
 ```
 
-### Ausführung
+### Execution
 
-1. **Manuell**: Wählen Sie die Funktion aus dem Dropdown und klicken Sie "Ausführen"
-2. **Automatisch**: Richten Sie einen Trigger ein (Erweitert → Trigger)
+1. **Manual**: Select the function from the dropdown and click "Run"
+2. **Automatic**: Set up a trigger (Extensions > Triggers)
 
-## 📊 Logs und Monitoring
+## Logs and Monitoring
 
-Das Script erstellt detaillierte Logs:
+The script creates detailed logs:
 
 ```
-=== GDPR Calendar Cleanup gestartet ===
-Cutoff-Datum: 15.06.2024
-Lösche Events älter als 6 Monate
-Löschmodus: TEST (nur Anzeige)
+=== GDPR Calendar Cleanup started ===
+Cutoff date: 06/15/2024
+Deleting events older than 6 months
+Delete mode: TEST (display only)
 =====================================
-Prüfe Kalender: Meeting Room A (c_xxx@resource.calendar.google.com)
-Gefundene alte Events: 15
-WÜRDE löschen: Team Meeting | 10.01.2024
-WÜRDE löschen: Projekt Review | 15.02.2024
+Checking calendar: Meeting Room A (c_xxx@resource.calendar.google.com)
+Old events found: 15
+WOULD delete: Team Meeting | 01/10/2024
+WOULD delete: Project Review | 02/15/2024
 ...
 ```
 
-**Logs anzeigen**: Ansicht → Protokoll
+**View logs**: View > Logs
 
-## 🔄 Automatisierung
+## Automation
 
-### Trigger einrichten
+### Setting up a trigger
 
-1. Klicken Sie auf "Erweitert" → "Trigger"
-2. Klicken Sie auf "Trigger hinzufügen"
-3. Konfigurieren Sie:
-   - **Funktion**: `cleanOldEvents`
-   - **Ereignisquelle**: Zeitgesteuert
-   - **Zeitbasierter Trigger**: Monatlich am 1.
-   - **Uhrzeit**: 02:00 - 03:00
+1. Click "Extensions" > "Triggers"
+2. Click "Add Trigger"
+3. Configure:
+   - **Function**: `cleanOldEvents`
+   - **Event source**: Time-driven
+   - **Time-based trigger**: Monthly on the 1st
+   - **Time of day**: 02:00 - 03:00
 
-### Empfohlene Häufigkeit
+### Recommended frequency
 
-- **Wöchentlich**: Für aktive Organisationen
-- **Monatlich**: Für Standard-Betrieb
-- **Vierteljährlich**: Für minimale Bereinigung
+- **Weekly**: For active organizations
+- **Monthly**: For standard operations
+- **Quarterly**: For minimal cleanup
 
-## 🛡️ Sicherheitshinweise
+## Security Notes
 
-### Vor der ersten Ausführung
+### Before first execution
 
-1. **Backup erstellen**: Exportieren Sie wichtige Kalender
-2. **Testmodus verwenden**: `deleteEvents = false`
-3. **Logs prüfen**: Überprüfen Sie alle zu löschenden Events
-4. **Berechtigungen testen**: Führen Sie `testCalendarAccess()` aus
+1. **Create a backup**: Export important calendars
+2. **Use test mode**: `deleteEvents = false`
+3. **Check logs**: Review all events to be deleted
+4. **Test permissions**: Run `testCalendarAccess()`
 
 ### Best Practices
 
-- **Regelmäßige Tests**: Führen Sie regelmäßig Testläufe durch
-- **Monitoring**: Überwachen Sie die Logs nach jeder Ausführung
-- **Backup-Strategie**: Erstellen Sie regelmäßige Kalender-Backups
-- **Schrittweise Einführung**: Beginnen Sie mit weniger kritischen Kalendern
+- **Regular testing**: Run test passes regularly
+- **Monitoring**: Review logs after every execution
+- **Backup strategy**: Create regular calendar backups
+- **Gradual rollout**: Start with less critical calendars
 
-## 🚨 Fehlerbehebung
+## Troubleshooting
 
-### Häufige Probleme
+### Common issues
 
-**"Kalender nicht gefunden"**
-- Prüfen Sie die Kalender-ID
-- Überprüfen Sie die Berechtigungen
-- Stellen Sie sicher, dass der Kalender existiert
+**"Calendar not found"**
+- Check the calendar ID
+- Verify permissions
+- Make sure the calendar exists
 
-**"Keine Berechtigung"**
-- Verwenden Sie einen Admin-Account
-- Oder gewähren Sie Edit-Rechte für den Kalender
-- Prüfen Sie die Google Workspace-Berechtigungen
+**"No permission"**
+- Use an admin account
+- Or grant edit rights for the calendar
+- Check the Google Workspace permissions
 
-**"Script läuft nicht"**
-- Überprüfen Sie die Trigger-Konfiguration
-- Prüfen Sie die Logs auf Fehlermeldungen
-- Testen Sie die Funktion manuell
+**"Script not running"**
+- Check the trigger configuration
+- Review the logs for error messages
+- Run the function manually
 
-### Debug-Tipps
+### Debugging tips
 
-1. Verwenden Sie `testCalendarAccess()` zum Testen
-2. Prüfen Sie die Logs in "Ansicht → Protokoll"
-3. Führen Sie das Script manuell aus
-4. Überprüfen Sie die Kalender-IDs
+1. Use `testCalendarAccess()` for testing
+2. Check the logs under View > Logs
+3. Run the script manually
+4. Verify the calendar IDs
 
-## 📝 Lizenz
+## License
 
-Dieses Projekt steht unter der MIT-Lizenz. Siehe [LICENSE](LICENSE) für Details.
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
 
-## 🤝 Beitragen
+## Contributing
 
-Beiträge sind willkommen! Bitte:
+Contributions are welcome! Please:
 
-1. Forken Sie das Repository
-2. Erstellen Sie einen Feature-Branch
-3. Committen Sie Ihre Änderungen
-4. Erstellen Sie einen Pull Request
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Create a pull request
 
-## 🔄 Changelog
+## Changelog
 
 ### Version 1.0
-- Initiale Version
-- Automatische Bereinigung alter Kalendereinträge
-- Testmodus für sichere Ausführung
-- Detaillierte Logging-Funktionalität
-- Hilfsfunktion für Kalender-Zugriffstests
+- Initial release
+- Automatic cleanup of old calendar events
+- Test mode for safe execution
+- Detailed logging functionality
+- Helper function for calendar access testing
 
 ---
 
-**⚠️ Haftungsausschluss**: Dieses Script löscht Daten dauerhaft. Verwenden Sie es mit Vorsicht und testen Sie es gründlich vor der produktiven Nutzung.
+**Disclaimer**: This script permanently deletes data. Use it with caution and test thoroughly before using in production.

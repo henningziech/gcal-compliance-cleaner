@@ -1,23 +1,23 @@
 /**
  * Google Calendar GDPR Cleanup Script
- * 
- * Dieses Script löscht automatisch Kalendereinträge, die älter als eine bestimmte Anzahl von Monaten sind.
- * Es ist besonders nützlich für die Einhaltung von GDPR-Richtlinien und zur Bereinigung von alten Kalendereinträgen.
- * 
- * WICHTIG: Dieses Script benötigt Kalender-Admin-Rechte oder Edit-Rechte für alle zu bereinigenden Kalender.
- * 
+ *
+ * This script automatically deletes calendar events older than a specified number of months.
+ * It is especially useful for GDPR compliance and cleaning up old calendar entries.
+ *
+ * IMPORTANT: This script requires calendar admin rights or edit rights for all calendars to be cleaned.
+ *
  * @author Henning Ziech
  * @version 1.0
  */
 
 function cleanOldEvents() {
   /**
-   * KONFIGURATION
-   * 
-   * Hier müssen Sie die Kalender-IDs Ihrer zu bereinigenden Kalender eintragen.
-   * Kalender-IDs finden Sie in den Kalender-Einstellungen unter "Kalender-ID".
-   * 
-   * Beispiel-Formate:
+   * CONFIGURATION
+   *
+   * Enter the calendar IDs of the calendars to be cleaned here.
+   * You can find calendar IDs in the calendar settings under "Calendar ID".
+   *
+   * Example formats:
    * - Resource Calendar: "c_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx@resource.calendar.google.com"
    * - Group Calendar: "c_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx@group.calendar.google.com"
    * - Domain Calendar: "domain.com_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx@resource.calendar.google.com"
@@ -26,77 +26,77 @@ function cleanOldEvents() {
     "YOUR_CALENDAR_ID_1@resource.calendar.google.com",
     "YOUR_CALENDAR_ID_2@group.calendar.google.com",
     "YOUR_CALENDAR_ID_3@resource.calendar.google.com"
-    // Fügen Sie hier weitere Kalender-IDs hinzu
+    // Add more calendar IDs here
   ];
 
   /**
-   * SICHERHEITSEINSTELLUNGEN
-   * 
-   * WICHTIG: Setzen Sie deleteEvents auf false für einen Testlauf!
-   * Das Script zeigt dann nur an, welche Events gelöscht würden, ohne sie tatsächlich zu löschen.
+   * SAFETY SETTINGS
+   *
+   * IMPORTANT: Set deleteEvents to false for a test run!
+   * The script will then only show which events would be deleted without actually deleting them.
    */
-  var deleteEvents = false; // Setzen Sie auf true, wenn wirklich gelöscht werden soll
-  var monthsBack = 6;       // Anzahl der Monate zurück (Events älter als X Monate werden gelöscht)
+  var deleteEvents = false; // Set to true to actually delete events
+  var monthsBack = 6;       // Number of months to look back (events older than X months will be deleted)
 
- 
-  // Berechne das Cutoff-Datum (X Monate zurück vom heutigen Datum)
+
+  // Calculate the cutoff date (X months back from today)
   var cutoffDate = new Date();
   cutoffDate.setMonth(cutoffDate.getMonth() - monthsBack);
-  
-  Logger.log("=== GDPR Calendar Cleanup gestartet ===");
-  Logger.log("Cutoff-Datum: " + cutoffDate.toLocaleDateString());
-  Logger.log("Lösche Events älter als " + monthsBack + " Monate");
-  Logger.log("Löschmodus: " + (deleteEvents ? "AKTIV" : "TEST (nur Anzeige)"));
+
+  Logger.log("=== GDPR Calendar Cleanup started ===");
+  Logger.log("Cutoff date: " + cutoffDate.toLocaleDateString());
+  Logger.log("Deleting events older than " + monthsBack + " months");
+  Logger.log("Delete mode: " + (deleteEvents ? "ACTIVE" : "TEST (display only)"));
   Logger.log("=====================================");
 
-  // Durchlaufe alle konfigurierten Kalender
+  // Iterate through all configured calendars
   for (var c = 0; c < calendarIds.length; c++) {
     var calendarId = calendarIds[c];
-    
-    // Versuche, den Kalender zu laden
+
+    // Try to load the calendar
     var calendar = CalendarApp.getCalendarById(calendarId);
     if (!calendar) {
-      Logger.log("FEHLER: Kalender nicht gefunden oder keine Berechtigung: " + calendarId);
+      Logger.log("ERROR: Calendar not found or no permission: " + calendarId);
       continue;
     }
-    
-    Logger.log("Prüfe Kalender: " + calendar.getName() + " (" + calendarId + ")");
-    
+
+    Logger.log("Checking calendar: " + calendar.getName() + " (" + calendarId + ")");
+
     try {
-      // Alle Events von 2000 bis zum Cutoff-Datum abrufen
-      // Hinweis: getEvents(startDate, endDate) - Events zwischen diesen Daten
+      // Fetch all events from 2000 to the cutoff date
+      // Note: getEvents(startDate, endDate) - events between these dates
       var events = calendar.getEvents(new Date(2000, 0, 1), cutoffDate);
-      Logger.log("Gefundene alte Events: " + events.length);
-      
-      // Durchlaufe alle gefundenen Events
+      Logger.log("Old events found: " + events.length);
+
+      // Iterate through all found events
       for (var i = 0; i < events.length; i++) {
         var event = events[i];
         var eventInfo = event.getTitle() + " | " + event.getStartTime().toLocaleDateString();
-        
+
         if (deleteEvents) {
-          // Event tatsächlich löschen
+          // Actually delete the event
           event.deleteEvent();
-          Logger.log("GELÖSCHT: " + eventInfo);
+          Logger.log("DELETED: " + eventInfo);
         } else {
-          // Nur anzeigen, was gelöscht würde (Testmodus)
-          Logger.log("WÜRDE löschen: " + eventInfo);
+          // Only show what would be deleted (test mode)
+          Logger.log("WOULD delete: " + eventInfo);
         }
       }
-      
-      Logger.log("Kalender '" + calendar.getName() + "' abgeschlossen.");
-      
+
+      Logger.log("Calendar '" + calendar.getName() + "' completed.");
+
     } catch (error) {
-      Logger.log("FEHLER beim Verarbeiten von Kalender '" + calendar.getName() + "': " + error.toString());
+      Logger.log("ERROR processing calendar '" + calendar.getName() + "': " + error.toString());
     }
   }
-  
-  Logger.log("=== GDPR Calendar Cleanup abgeschlossen ===");
+
+  Logger.log("=== GDPR Calendar Cleanup completed ===");
 }
 
 /**
- * Hilfsfunktion: Testet die Verbindung zu allen konfigurierten Kalendern
- * Führen Sie diese Funktion aus, um zu prüfen, ob alle Kalender-IDs korrekt sind
- * und Sie die notwendigen Berechtigungen haben.
+ * Helper function: Tests the connection to all configured calendars.
+ * Run this function to verify that all calendar IDs are correct
+ * and you have the necessary permissions.
  */
 function testCalendarAccess() {
   var calendarIds = [
@@ -104,22 +104,22 @@ function testCalendarAccess() {
     "YOUR_CALENDAR_ID_2@group.calendar.google.com",
     "YOUR_CALENDAR_ID_3@resource.calendar.google.com"
   ];
-  
-  Logger.log("=== Kalender-Zugriffstest ===");
-  
+
+  Logger.log("=== Calendar access test ===");
+
   for (var i = 0; i < calendarIds.length; i++) {
     var calendarId = calendarIds[i];
     try {
       var calendar = CalendarApp.getCalendarById(calendarId);
       if (calendar) {
-        Logger.log("✓ OK: " + calendar.getName() + " (" + calendarId + ")");
+        Logger.log("OK: " + calendar.getName() + " (" + calendarId + ")");
       } else {
-        Logger.log("✗ FEHLER: Kalender nicht gefunden: " + calendarId);
+        Logger.log("ERROR: Calendar not found: " + calendarId);
       }
     } catch (error) {
-      Logger.log("✗ FEHLER: " + calendarId + " - " + error.toString());
+      Logger.log("ERROR: " + calendarId + " - " + error.toString());
     }
   }
-  
-  Logger.log("=== Test abgeschlossen ===");
+
+  Logger.log("=== Test completed ===");
 }
